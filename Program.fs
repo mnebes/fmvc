@@ -15,11 +15,27 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
+
 open Westwind.AspNetCore.LiveReload
+open fmvc.Models
 open fmvc.Users
+
+open Giraffe
+open Giraffe.EndpointRouting
+
+open Giraffe.Razor
 
 module Program =
     let exitCode = 0
+    
+    let model: HomeViewModel = { Id = 12 }
+    let giraffeEndpoints = [
+        subRoute "/giraffe" [
+            GET [
+                route "/home" (razorHtmlView "Home/Index" (Some model) None None)
+            ]
+        ]
+    ]
 
     [<EntryPoint>]
     let main args =
@@ -53,6 +69,8 @@ module Program =
         app.UseStaticFiles()
         app.UseRouting()
         app.UseAuthorization()
+        
+        app.MapGiraffeEndpoints(giraffeEndpoints)
 
         app.MapControllerRoute(name = "default", pattern = "{controller=Home}/{action=Index}/{id?}")
 
