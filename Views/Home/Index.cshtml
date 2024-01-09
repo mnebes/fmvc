@@ -1,0 +1,15 @@
+﻿@using fmvc.Users
+@model fmvc.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@inject NameService NameService
+@{
+    string name = await NameService.GetName(Model.Id);
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome @name, isn't this awesome, bruh?</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
